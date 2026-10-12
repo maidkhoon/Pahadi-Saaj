@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+import { INSTAGRAM_URL, STORE_NAME, STORE_TAGLINE } from '../consts';
+const categories = ['All pieces', 'Ladies’ Suits', 'Sadriyaan'] as const;
+---
+<BaseLayout title="Pahadi Saaj | Traditional Style Catalogue" description="Explore sample catalogue collections for Ladies’ Suits and Sadriyaan at Pahadi Saaj.">
+<div class="announcement"><span>Made for everyday moments and special gatherings</span><span class="announcement-dot" aria-hidden="true">✦</span><span>Local style, personal service</span></div>
+<header class="site-header">
+<a class="brand" href="#top" aria-label="Pahadi Saaj home"><span class="brand-mark" aria-hidden="true">PS</span><span class="brand-name"><strong>{STORE_NAME}</strong><small>ROOTED IN TRADITION</small></span></a>
+<nav class="desktop-nav" aria-label="Main navigation"><a href="#collection">Collection</a><a href="#our-story">Our story</a><a href="#visit">Contact</a></nav>
+<a class="header-link" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a>
+</header>
+<main id="top">
+<section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow"><span class="eyebrow-line"></span> A COLLECTION WITH CHARACTER</p><h1 id="hero-title">Style that<br /><em>feels like home.</em></h1><p class="hero-description">A thoughtful edit of traditional favourites and everyday essentials. Find a piece you love, then connect with us directly.</p><div class="hero-actions"><a class="button" href="#collection">Explore collection <span aria-hidden="true">↘</span></a><a class="text-link" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Follow our journey <span aria-hidden="true">↗</span></a></div><div class="hero-footnote"><span class="hero-sparkle" aria-hidden="true">✳</span><span>PERSONAL PICKS. TIMELESS FEELING.</span></div></div>
+<div class="hero-art" aria-label="Decorative textile-inspired artwork"><div class="art-topline"><span>THE EVERYDAY EDIT</span><span>NO. 01 / PAHADI SAAJ</span></div><div class="art-sun"></div><div class="art-arch art-arch-back"></div><div class="art-arch art-arch-front"><div class="art-fabric"></div><div class="art-stitch"></div></div><div class="art-flower flower-one">✳</div><div class="art-flower flower-two">✳</div><div class="art-caption"><span>Tradition, reimagined</span><span>✦</span></div></div></section>
+<section class="ticker" aria-label="Collections"><span>THE PIECES YOU COME BACK TO</span><span aria-hidden="true">✳</span><span>THE PIECES YOU COME BACK TO</span><span aria-hidden="true">✳</span><span class="ticker-extra">THE PIECES YOU COME BACK TO</span></section>
+<section class="collection section-wrap" id="collection" aria-labelledby="collection-title"><div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> FIND YOUR FAVOURITE</p><h2 id="collection-title">The <em>collection.</em></h2></div><p class="section-intro">Browse by category and ask us about the pieces that catch your eye. This is a demo collection; actual products will be added after owner approval.</p></div>
+<div class="category-tabs" role="group" aria-label="Filter products by category">{categories.map((category, index) => <button class:list={["category-tab", { active: index === 0 }]} type="button" data-filter={category} aria-pressed={index === 0 ? 'true' : 'false'}>{category}<span>{category === 'All pieces' ? products.length.toString().padStart(2, '0') : products.filter((product) => product.category === category).length.toString().padStart(2, '0')}</span></button>)}</div>
+<div class="product-grid" id="product-grid">{products.map((product) => <div class="product-grid-item" data-category={product.category}><ProductCard product={product} /></div>)}</div>
+<p class="catalogue-note"><span aria-hidden="true">✳</span> Product names, artwork, descriptions and prices shown here are placeholders for design review.</p></section>
+<section class="story" id="our-story"><div class="story-stamp" aria-hidden="true"><span>LOCAL</span><strong>✳</strong><span>WITH LOVE</span></div><div class="story-copy"><p class="eyebrow"><span class="eyebrow-line"></span> A NOTE FROM US</p><h2>Good style is personal.<br /><em>So is good service.</em></h2><p>Some pieces simply feel right. We’re building this little online window so you can browse at your own pace and reach out to the shop for details, sizing and availability.</p><a class="text-link" href="#visit">Come say hello <span aria-hidden="true">↗</span></a></div><div class="story-side"><span class="quote-mark">“</span><p>{STORE_TAGLINE}</p><span class="story-side-rule"></span><small>THE PAHADI SAAJ EDIT</small></div></section>
+<section class="visit section-wrap" id="visit"><div><p class="eyebrow"><span class="eyebrow-line"></span> LET’S CONNECT</p><h2>Found your <em>favourite?</em></h2><p>Message us for product details, current pricing and availability. Shop contact and location information will be added once confirmed.</p></div><div class="visit-actions"><a class="button" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Message us on Instagram <span aria-hidden="true">↗</span></a><span class="visit-note">WhatsApp enquiry will be enabled once the shop confirms its number.</span></div></section>
+</main>
+<footer class="site-footer"><a class="brand footer-brand" href="#top"><span class="brand-mark">PS</span><span class="brand-name"><strong>{STORE_NAME}</strong><small>ROOTED IN TRADITION</small></span></a><span class="footer-center">A LITTLE TRADITION, A LOT OF YOU.</span><a class="footer-top" href="#top">BACK TO TOP ↑</a><span class="footer-bottom">© {new Date().getFullYear()} Pahadi Saaj · Catalogue demo</span></footer>
+<script>
+const tabs = document.querySelectorAll<HTMLButtonElement>('.category-tab');
+const items = document.querySelectorAll<HTMLElement>('.product-grid-item');
+tabs.forEach((tab) => tab.addEventListener('click', () => {
+ const filter = tab.dataset.filter;
+ tabs.forEach((button) => { const active = button === tab; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
+ items.forEach((item) => { item.hidden = filter !== 'All pieces' && item.dataset.category !== filter; });
+}));
+</script>
+</BaseLayout>
