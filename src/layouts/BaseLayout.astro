@@ -1,0 +1,18 @@
+---
+import '../styles/global.css';
+import { STORE_NAME } from '../consts';
+interface Props { title?: string; description?: string; }
+const { title = STORE_NAME, description = 'Browse the Pahadi Saaj catalogue and enquire directly with the shop.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#f7f4ed" />
+<meta name="description" content={description} />
+<title>{title}</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body><slot /></body>
+</html>

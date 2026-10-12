@@ -1,0 +1,18 @@
+---
+import type { Product } from '../data/products';
+import { WHATSAPP_NUMBER } from '../consts';
+interface Props { product: Product; }
+const { product } = Astro.props;
+const whatsappHref = WHATSAPP_NUMBER && /^\d{10,15}$/.test(WHATSAPP_NUMBER)
+ ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Namaste Pahadi Saaj, I would like to enquire about ${product.name} (${product.category}). Please share the details and price.`)}`
+ : undefined;
+---
+<article class="product-card">
+<a class="product-image-link" href={`#enquire-${product.id}`} aria-label={`Enquire about ${product.name}`}>
+<img class="product-image" src={product.image} alt={product.imageAlt} loading="lazy" width="600" height="720" />
+<span class="product-tag">{product.note}</span></a>
+<div class="product-copy"><p class="product-category">{product.category}</p><h3>{product.name}</h3>
+<p class="product-description">{product.description}</p><div class="product-bottom"><span class="product-price">{product.priceLabel}</span>
+{whatsappHref ? <a class="button button-small" href={whatsappHref} target="_blank" rel="noopener noreferrer">Enquire ↗</a> : <button class="button button-small" type="button" disabled title="The shop's WhatsApp number will be added after confirmation">Enquire soon</button>}
+</div><span class="sr-only" id={`enquire-${product.id}`}>Ask the shop for availability and price.</span></div>
+</article>
